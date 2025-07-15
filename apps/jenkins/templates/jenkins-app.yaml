@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins             # ✅ App name in Argo CD UI
+  namespace: argocd         # ✅ Must be in the namespace where Argo CD is installed
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:amanndevops/Argo_cd.git  # ✅ Your Git repo
+    targetRevision: main                             # ✅ Git branch
+    path: apps/jenkins                               # ✅ Relative path to Helm chart
+  destination:
+    server: https://kubernetes.default.svc           # ✅ In-cluster Kubernetes API
+    namespace: default                                # ✅ Namespace where Jenkins will be deployed
+  syncPolicy:
+    automated:                                       # ✅ Argo CD will auto-sync
+      selfHeal: true
+      prune: true
